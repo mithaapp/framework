@@ -36,9 +36,9 @@
  * @link  https://www.mithaapp.com
  */
 
-if (!function_exists('base_url')) {
-    function base_url($path = null, $scheme = null): string
-    {
+namespace Mitha\Aprilia\Database;
 
-    }
+class Database
+{
+
 }
