@@ -3,7 +3,7 @@
 /**
  * Mitha Framework
  *
- * An lightweight PHP framework for developers
+ * A lightweight PHP framework for developers
  *
  * This content is released under the MIT License (MIT)
  *
