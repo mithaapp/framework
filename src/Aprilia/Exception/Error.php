@@ -40,5 +40,15 @@ namespace Mitha\Aprilia\Exception;
 
 class Error
 {
+    public function errorHandler($level, $message, $file, $line)
+    {
+        if (error_reporting() !== 0) {
+            throw new \ErrorException($message, 0, $level, $file, $line);
+        }
+    }
 
+    public function exceptionHandler($exception)
+    {
+
+    }
 }

@@ -40,5 +40,23 @@ namespace Mitha\Aprilia\View;
 
 class View
 {
+    protected $viewPath;
 
+    public function __construct($viewPath)
+    {
+        $this->viewPath = $viewPath;
+    }
+
+    public function render($view, $args = [])
+    {
+        extract($args, EXTR_SKIP);
+
+        $file = $this->viewPath . $view;
+
+        if (is_readable($file)) {
+            require $file;
+        } else {
+            throw new \Exception("$file not found");
+        }
+    }
 }

@@ -38,7 +38,7 @@
 
 namespace Mitha\Aprilia\Config;
 
-class BaseConfig
+class Config
 {
 
 }
