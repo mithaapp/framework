@@ -80,7 +80,7 @@ class Router
         return $this->params;
     }
 
-    public function run($url)
+    public function routeUrl($url)
     {
         $url = $this->removeQueryStringVariables($url);
 
