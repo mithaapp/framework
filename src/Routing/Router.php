@@ -36,7 +36,7 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Aprilia\Router;
+namespace Mitha\Framework\Routing;
 
 class Router
 {

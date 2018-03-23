@@ -36,7 +36,7 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Aprilia\Http;
+namespace Mitha\Framework\Http;
 
 class Request
 {

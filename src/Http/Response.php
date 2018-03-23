@@ -36,7 +36,7 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Aprilia\Response;
+namespace Mitha\Framework\Response;
 
 class Response
 {

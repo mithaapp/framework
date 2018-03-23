@@ -36,7 +36,7 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Aprilia\Exception;
+namespace Mitha\Framework\Exception;
 
 class Error
 {

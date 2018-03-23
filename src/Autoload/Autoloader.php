@@ -36,31 +36,18 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Aprilia\Controller;
+namespace Mitha\Framework\Autoload;
 
-class Controller
+class Autoloader
 {
-    public function __call($name, $args)
+    public function register()
     {
-        $method = $name;
-
-        if (method_exists($this, $method)) {
-            if ($this->before() !== false) {
-                call_user_func_array([$this, $method], $args);
-                $this->after();
+        spl_autoload_register(function ($class) {
+            $root = dirname(__DIR__);   // get the parent directory
+            $file = $root . '/' . str_replace('\\', '/', $class) . '.php';
+            if (is_readable($file)) {
+                require $root . '/' . str_replace('\\', '/', $class) . '.php';
             }
-        } else {
-            throw new \Exception("Method $method not found in controller " . get_class($this));
-        }
-    }
-
-    protected function before()
-    {
-
-    }
-
-    protected function after()
-    {
-
+        });
     }
 }

@@ -36,9 +36,9 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Aprilia\Config;
+namespace Mitha\Framework\Config;
 
-class Config
+class BaseConfig
 {
 
 }

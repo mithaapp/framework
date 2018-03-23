@@ -36,9 +36,9 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Aprilia\View;
+namespace Mitha\Framework\View;
 
-class View
+class Renderer
 {
     protected $viewPath;
 

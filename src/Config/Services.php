@@ -36,7 +36,7 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Aprilia\Config;
+namespace Mitha\Framework\Config;
 
 class Services
 {
@@ -48,7 +48,7 @@ class Services
             return self::getSharedService('renderer', $viewPath);
         }
 
-        return new \Mitha\Aprilia\View\View($viewPath);
+        return new \Mitha\Framework\View\Renderer($viewPath);
     }
 
     //--------------------------------------------------------------------
