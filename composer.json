@@ -22,6 +22,9 @@
   "autoload": {
     "psr-4": {
       "Mitha\\Framework\\": "src/"
+    },
+    "files": {
+      "src/Illuminate/Support/helpers.php",
     }
   },
   "repositories": {
@@ -30,6 +33,8 @@
       "url": "https://packagist.org"
     }
   },
-  "minimum-stability": "dev-develop",
-  "require": {}
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.2"
+  }
 }

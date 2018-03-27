@@ -47,9 +47,9 @@ class Renderer
         $this->viewPath = $viewPath;
     }
 
-    public function render($view, $args = [])
+    public function render($view, $data = [])
     {
-        extract($args, EXTR_SKIP);
+        extract($data, EXTR_SKIP);
 
         $file = $this->viewPath . $view;
 

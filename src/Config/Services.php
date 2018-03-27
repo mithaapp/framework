@@ -38,6 +38,8 @@
 
 namespace Mitha\Framework\Config;
 
+use Mitha\Framework\View\Renderer;
+
 class Services
 {
     protected static $services = [];
@@ -48,7 +50,7 @@ class Services
             return self::getSharedService('renderer', $viewPath);
         }
 
-        return new \Mitha\Framework\View\Renderer($viewPath);
+        return new Renderer($viewPath);
     }
 
     //--------------------------------------------------------------------
