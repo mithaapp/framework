@@ -44,7 +44,7 @@ class Services
 {
     protected static $services = [];
 
-    public static function renderer($viewPath = APPPATH . 'Views/', $sharedService = true)
+    public static function renderer($viewPath = APP_PATH . 'Views/', $sharedService = true)
     {
         if ($sharedService) {
             return self::getSharedService('renderer', $viewPath);

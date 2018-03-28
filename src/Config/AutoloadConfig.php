@@ -36,27 +36,20 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Framework\View;
+namespace Mitha\Framework\Config;
 
-class Renderer
+class AutoloadConfig
 {
-    protected $viewPath;
+    protected $psr4 = [];
+    protected $files = [];
 
-    public function __construct($viewPath)
+    public function __construct()
     {
-        $this->viewPath = $viewPath;
-    }
+        $dir = dirname(__DIR__);
 
-    public function render($view, $data = [])
-    {
-        extract($data, EXTR_SKIP);
-
-        $file = $this->viewPath . $view . '.php';
-
-        if (is_readable($file)) {
-            require $file;
-        } else {
-            throw new \Exception("$file not found");
-        }
+        $this->files = [
+            $dir . "/Helpers/common.php",
+            $dir . "/Helpers/url.php"
+        ];
     }
 }

@@ -40,6 +40,14 @@ namespace Mitha\Framework\Routing;
 
 class Router
 {
+    protected $defaultNamespace;
+
+    protected $defaultController;
+
+    protected $defaultMethod;
+
+    protected $default404Override;
+
     protected $routes = [];
 
     protected $params = [];
@@ -87,15 +95,13 @@ class Router
         if ($this->match($url)) {
 
             $controller = $this->params['controller'];
-            $controller = $this->convertToStudlyCaps($controller);
+
             $controller = $this->getNamespace() . $controller;
 
             if (class_exists($controller)) {
                 $object = new $controller($this->params);
 
                 $action = $this->params['action'];
-
-                $action = $this->convertToCamelCase($action);
 
                 if (method_exists($object, $action)) {
                     $object->$action();
@@ -108,18 +114,6 @@ class Router
         } else {
             throw new \Exception('No route matched.', 404);
         }
-    }
-
-
-    protected function convertToStudlyCaps($string)
-    {
-        return str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
-    }
-
-
-    protected function convertToCamelCase($string)
-    {
-        return lcfirst($this->convertToStudlyCaps($string));
     }
 
     protected function removeQueryStringVariables($url)
@@ -137,13 +131,34 @@ class Router
         return $url;
     }
 
+    public function setDefaultNamespace(string $namespace)
+    {
+        $this->defaultNamespace = $namespace;
+    }
+
+    public function setDefaultController(string $controller)
+    {
+        $this->defaultController = $controller;
+    }
+
+    public function setDefaultMethod(string $method)
+    {
+        $this->defaultMethod = $method;
+    }
+
+    public function set404Override(string $override)
+    {
+        $this->default404Override = $override;
+    }
+
     protected function getNamespace()
     {
-        $namespace = 'App\Controllers\\';
+        $namespace = $this->defaultNamespace;
 
         if (array_key_exists('namespace', $this->params)) {
-            $namespace .= $this->params['namespace'] . '\\';
+            $namespace .= $this->params['namespace'];
         }
+        $namespace .= '\\';
 
         return $namespace;
     }

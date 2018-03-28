@@ -44,15 +44,33 @@ class Mitha
 {
     public function __construct()
     {
-
+        $this->registerAutoload();
     }
 
     public function run()
     {
-        $router = new Router();
+
+        $routes = new Router();
 
         require APP_PATH.'Config/Routes.php';
 
-        $router->routeUrl($_SERVER['QUERY_STRING']);
+        $routes->routeUrl($_SERVER['QUERY_STRING']);
+    }
+
+    protected function registerAutoload(){
+        require_once APP_PATH.'Config/Autoload.php';
+
+        $autoload = new \Config\Autoload();
+        $loader = new \Composer\Autoload\ClassLoader();
+
+        foreach ($autoload->psr4 as $namespace => $path){
+            $loader->setPsr4($namespace, $path);
+
+        }
+        $loader->register(true);
+
+        foreach ($autoload->files as $path){
+            require $path;
+        }
     }
 }
