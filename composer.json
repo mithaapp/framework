@@ -22,9 +22,10 @@
     "psr-4": {
       "Mitha\\Framework\\": "src/"
     },
-    "files": {
-      "src/Illuminate/Support/helpers.php",
-    }
+    "files": [
+      "src/Helpers/common.php",
+	  "src/Helpers/url.php"
+    ]
   },
   "repositories": {
     "packagist.org": {
