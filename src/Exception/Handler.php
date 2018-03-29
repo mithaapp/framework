@@ -3,7 +3,7 @@
 /**
  * Mitha Framework
  *
- * A lightweight PHP framework for developers
+ * An lightweight PHP framework for developers
  *
  * This content is released under the MIT License (MIT)
  *
@@ -36,9 +36,29 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Framework\Config;
+namespace Mitha\Framework\Exception;
 
-class BaseConfig
+class Handler
 {
-    public $baseUrl = '';
+    public static function errorHandler($level, $message, $file, $line)
+    {
+        if (error_reporting() !== 0) {
+            throw new \ErrorException($message, 0, $level, $file, $line);
+        }
+    }
+
+    public static function exceptionHandler($exception)
+    {
+        $code = $exception->getCode();
+        if ($code != 404) {
+            $code = 500;
+        }
+        http_response_code($code);
+
+        echo "<h1>Fatal error</h1>";
+        echo "<p>Uncaught exception: '" . get_class($exception) . "'</p>";
+        echo "<p>Message: '" . $exception->getMessage() . "'</p>";
+        echo "<p>Stack trace:<pre>" . $exception->getTraceAsString() . "</pre></p>";
+        echo "<p>Thrown in '" . $exception->getFile() . "' on line " . $exception->getLine() . "</p>";
+    }
 }

@@ -38,17 +38,12 @@
 
 namespace Mitha\Framework\Exception;
 
-class Error
+use Mitha\Framework\Controller;
+
+class Error extends Controller
 {
-    public function errorHandler($level, $message, $file, $line)
+    public function show404Error()
     {
-        if (error_reporting() !== 0) {
-            throw new \ErrorException($message, 0, $level, $file, $line);
-        }
-    }
-
-    public function exceptionHandler($exception)
-    {
-
+        echo '404 Not Found';
     }
 }
