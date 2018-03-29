@@ -59,7 +59,7 @@ class Router
 
     protected $params = [];
 
-    public function add($route, $params = [])
+    public function add(string $route, array $params = [])
     {
         foreach ($this->placeholders as $key => $value) {
             $route = str_replace($key, $value, $route);
@@ -70,12 +70,12 @@ class Router
         $this->routes[$route] = $params;
     }
 
-    public function getRoutes()
+    public function getRoutes(): array
     {
         return $this->routes;
     }
 
-    public function match($url)
+    public function match(string $url): bool
     {
         foreach ($this->routes as $route => $params) {
             if (preg_match($route, $url, $matches)) {
@@ -91,12 +91,12 @@ class Router
         return false;
     }
 
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
 
-    public function routeUrl($url)
+    public function routeUrl(string $url)
     {
         $url = $this->removeQueryStringVariables($url);
         $url = ltrim($url, '/');
@@ -124,7 +124,7 @@ class Router
         }
     }
 
-    protected function removeQueryStringVariables($url)
+    protected function removeQueryStringVariables(string $url): string
     {
         if ($url != '') {
             $parts = explode('?', $url, 2);
@@ -159,7 +159,7 @@ class Router
         $this->default404Override = $override;
     }
 
-    protected function getNamespace()
+    protected function getNamespace(): string
     {
         $namespace = $this->defaultNamespace;
 

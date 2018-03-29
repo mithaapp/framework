@@ -38,6 +38,7 @@
 
 namespace Mitha\Framework\Config;
 
+use Mitha\Framework\Http\Request;
 use Mitha\Framework\View\Renderer;
 
 class Services
@@ -51,6 +52,15 @@ class Services
         }
 
         return new Renderer($viewPath);
+    }
+
+    public static function request($sharedService = true)
+    {
+        if ($sharedService) {
+            return self::getSharedService('request');
+        }
+
+        return new Request();
     }
 
     //--------------------------------------------------------------------

@@ -40,5 +40,55 @@ namespace Mitha\Framework\Http;
 
 class Request
 {
+    public function getGet(string $key = null, string $filterType = null, string $flag = null)
+    {
 
+        if (!$key) {
+            return $filterType ? filter_var_array($_GET, $filterType) : $_GET;
+        }
+
+        if (!isset($_GET[$key])) {
+            return false;
+        }
+
+        if ($filterType) {
+            return filter_input(INPUT_GET, $key, $filterType, $flag);
+        } else {
+            return $_GET[$key];
+        }
+    }
+
+    public function getPost(string $key = null, string $filterType = null, string $flag = null)
+    {
+        if (!$key) {
+            return $filterType ? filter_var_array($_POST, $filterType) : $_POST;
+        }
+
+        if (!isset($_POST[$key])) {
+            return false;
+        }
+
+        if ($filterType) {
+            return filter_input(INPUT_POST, $key, $filterType, $flag);
+        } else {
+            return $_POST[$key];
+        }
+    }
+
+    public function getCookie(string $key = null, string $filterType = null, string $flag = null)
+    {
+        if (!$key) {
+            return $filterType ? filter_var_array($_COOKIE, $filterType) : $_COOKIE;
+        }
+
+        if (!isset($_COOKIE[$key])) {
+            return false;
+        }
+
+        if ($filterType) {
+            return filter_input(INPUT_COOKIE, $key, $filterType, $flag);
+        } else {
+            return $_COOKIE[$key];
+        }
+    }
 }

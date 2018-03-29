@@ -37,7 +37,7 @@
  */
 
 if (!function_exists('base_url')) {
-    function base_url($path = null, $scheme = null): string
+    function base_url(string $path = null, string $scheme = null): string
     {
         $config = new Config\App();
         $base = $config->baseURL;

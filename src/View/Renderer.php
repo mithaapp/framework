@@ -47,7 +47,7 @@ class Renderer
         $this->viewPath = $viewPath;
     }
 
-    public function render($view, $data = [])
+    public function render(string $view, array $data = [])
     {
         extract($data, EXTR_SKIP);
 
