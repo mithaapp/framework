@@ -54,7 +54,7 @@ class Mitha
 
         require APP_PATH.'Config/Routes.php';
 
-        $routes->routeUrl($_SERVER['QUERY_STRING']);
+        $routes->routeUrl($_SERVER['REQUEST_URI']);
     }
 
     protected function registerAutoload(){

@@ -50,15 +50,23 @@ class Router
 
     protected $routes = [];
 
+    protected $placeholders = [
+        '{any}' => '[^/]+',
+        '{alphanum}' => '[a-zA-Z0-9]+',
+        '{num}' => '[0-9]+',
+        '{alpha}' => '[a-zA-Z]+',
+    ];
+
     protected $params = [];
 
     public function add($route, $params = [])
     {
+        foreach ($this->placeholders as $key => $value) {
+            $route = str_replace($key, $value, $route);
+        }
         $route = preg_replace('/\//', '\\/', $route);
-        $route = preg_replace('/\{([a-z]+)\}/', '(?P<\1>[a-z-]+)', $route);
         $route = preg_replace('/\{([a-z]+):([^\}]+)\}/', '(?P<\1>\2)', $route);
         $route = '/^' . $route . '$/i';
-
         $this->routes[$route] = $params;
     }
 
@@ -91,7 +99,7 @@ class Router
     public function routeUrl($url)
     {
         $url = $this->removeQueryStringVariables($url);
-
+        $url = ltrim($url, '/');
         if ($this->match($url)) {
 
             $controller = $this->params['controller'];
@@ -119,7 +127,7 @@ class Router
     protected function removeQueryStringVariables($url)
     {
         if ($url != '') {
-            $parts = explode('&', $url, 2);
+            $parts = explode('?', $url, 2);
 
             if (strpos($parts[0], '=') === false) {
                 $url = $parts[0];
