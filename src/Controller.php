@@ -40,6 +40,13 @@ namespace Mitha\Framework;
 
 class Controller
 {
+    private $routeParams;
+
+    public function __construct($routeParams)
+    {
+        $this->routeParams = $routeParams;
+    }
+
     public function __call($name, $args)
     {
         $method = $name;
@@ -52,6 +59,19 @@ class Controller
         } else {
             throw new \Exception("Method $method not found in controller " . get_class($this));
         }
+    }
+
+    protected function getParam(string $key = null)
+    {
+        $params = $this->routeParams;
+
+        unset($params['controller']);
+        unset($params['action']);
+
+        if ($key) {
+            return $params[$key] ?? null;
+        }
+        return $params;
     }
 
     protected function before()

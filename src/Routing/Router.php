@@ -51,10 +51,10 @@ class Router
     protected $routes = [];
 
     protected $placeholders = [
-        '{any}' => '[^/]+',
-        '{alphanum}' => '[a-zA-Z0-9]+',
-        '{num}' => '[0-9]+',
-        '{alpha}' => '[a-zA-Z]+',
+        '(any)' => '[^/]+',
+        '(alphanum)' => '[a-zA-Z0-9]+',
+        '(num)' => '[0-9]+',
+        '(alpha)' => '[a-zA-Z]+',
     ];
 
     protected $params = [];
@@ -100,7 +100,7 @@ class Router
     {
         $url = $this->removeQuery($url);
 
-        $url = ($url == '') ? '/' : ltrim($url, '/');
+        $url = ($url == '/') ? $url : ltrim($url, '/');
 
         if ($this->match($url)) {
 
