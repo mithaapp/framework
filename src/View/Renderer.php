@@ -40,21 +40,44 @@ namespace Mitha\Framework\View;
 
 class Renderer
 {
+    protected $config;
+    protected $data = [];
     protected $viewPath;
+    protected $saveData;
 
-    public function __construct($viewPath)
+    public function __construct($viewPath, $config)
     {
+        $this->config = $config;
+        $this->saveData = $config->saveData ?? null;
         $this->viewPath = $viewPath;
     }
 
-    public function render(string $view, array $data = [])
+    public function setData(array $data = [])
     {
-        extract($data, EXTR_SKIP);
+        $this->data = array_merge($this->data, $data);
+
+        return $this;
+    }
+
+    public function render(string $view, $saveData = null)
+    {
+        if ($saveData !== null) {
+            $this->saveData = $saveData;
+        }
+
+        extract($this->data);
+
+        if (!$this->saveData) {
+            $this->data = [];
+        }
 
         $file = $this->viewPath . $view . '.php';
 
         if (is_readable($file)) {
+            ob_start();
             require $file;
+            $output = ob_get_clean();
+            return $output;
         } else {
             throw new \Exception("$file not found");
         }

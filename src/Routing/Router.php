@@ -98,7 +98,7 @@ class Router
 
     public function routeUrl(string $url)
     {
-        $url = $this->removeQueryStringVariables($url);
+        $url = $this->removeQuery($url);
         $url = ltrim($url, '/');
         if ($this->match($url)) {
 
@@ -114,7 +114,7 @@ class Router
                 if (method_exists($object, $action)) {
                     $object->$action();
                 } else {
-                    throw new \Exception("Method $action in controller $controller cannot be called directly - remove the Action suffix to call this method");
+                    throw new \Exception("Method $action in controller $controller cannot be called directly");
                 }
             } else {
                 throw new \Exception("Controller class $controller not found");
@@ -124,10 +124,10 @@ class Router
         }
     }
 
-    protected function removeQueryStringVariables(string $url): string
+    protected function removeQuery(string $url): string
     {
         if ($url != '') {
-            $parts = explode('?', $url, 2);
+            $parts = explode('&', $url, 2);
 
             if (strpos($parts[0], '=') === false) {
                 $url = $parts[0];

@@ -38,20 +38,25 @@
 
 namespace Mitha\Framework\Config;
 
+use Config\View;
 use Mitha\Framework\Http\Request;
 use Mitha\Framework\View\Renderer;
 
-class Services
+class BaseServices
 {
     protected static $services = [];
 
-    public static function renderer($viewPath = APP_PATH . 'Views/', $sharedService = true)
+    public static function renderer($viewPath = APP_PATH . 'Views/', $config = null, $sharedService = true)
     {
-        if ($sharedService) {
-            return self::getSharedService('renderer', $viewPath);
+        if (is_null($config)) {
+            $config = new View();
         }
 
-        return new Renderer($viewPath);
+        if ($sharedService) {
+            return self::getSharedService('renderer', $viewPath, $config);
+        }
+
+        return new Renderer($viewPath, $config);
     }
 
     public static function request($sharedService = true)

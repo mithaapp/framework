@@ -37,10 +37,10 @@
  */
 
 if (!function_exists('view')) {
-    function view(string $name, array $data = [])
+    function view(string $name, array $data = [], $saveData = null)
     {
-        $renderer = Config\Services::renderer();
+        $renderer = \Config\Services::renderer();
 
-        return $renderer->render($name, $data);
+        return $renderer->setData($data)->render($name, $saveData);
     }
 }

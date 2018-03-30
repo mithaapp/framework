@@ -39,8 +39,8 @@
 if (!function_exists('base_url')) {
     function base_url(string $path = null, string $scheme = null): string
     {
-        $config = new Config\App();
-        $base = $config->baseURL;
+        $config = new \Config\App();
+        $base = $config->baseUrl;
         if ($scheme == 'https') {
             $base = str_replace('http', $scheme, $base);
         }
