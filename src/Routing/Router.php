@@ -99,7 +99,9 @@ class Router
     public function routeUrl(string $url)
     {
         $url = $this->removeQuery($url);
-        $url = ltrim($url, '/');
+
+        $url = ($url == '') ? '/' : ltrim($url, '/');
+
         if ($this->match($url)) {
 
             $controller = $this->params['controller'];
@@ -127,7 +129,7 @@ class Router
     protected function removeQuery(string $url): string
     {
         if ($url != '') {
-            $parts = explode('&', $url, 2);
+            $parts = explode('?', $url, 2);
 
             if (strpos($parts[0], '=') === false) {
                 $url = $parts[0];
