@@ -20,7 +20,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Mitha\\Framework\\": "src/"
+      "Mitha\\": "src/"
     },
     "files": [
       "src/Helpers/common.php",
