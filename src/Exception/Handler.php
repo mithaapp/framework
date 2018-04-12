@@ -36,7 +36,7 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Framework\Exception;
+namespace Mitha\Exception;
 
 class Handler
 {

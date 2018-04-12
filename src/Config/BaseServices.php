@@ -36,11 +36,11 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Framework\Config;
+namespace Mitha\Config;
 
 use Config\View;
-use Mitha\Framework\Http\Request;
-use Mitha\Framework\View\Renderer;
+use Mitha\Http\Request;
+use Mitha\View\Renderer;
 
 class BaseServices
 {

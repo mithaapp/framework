@@ -36,11 +36,11 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Framework;
+namespace Mitha;
 
-use Mitha\Framework\Routing\Router;
+use Mitha\Routing\Router;
 
-class Mitha
+class Aprilia
 {
     public function __construct()
     {

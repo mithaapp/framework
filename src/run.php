@@ -40,4 +40,4 @@ error_reporting(E_ALL);
 set_error_handler('\Mitha\Framework\Exception\Handler::errorHandler');
 set_exception_handler('\Mitha\Framework\Exception\Handler::exceptionHandler');
 
-return new \Mitha\Framework\Mitha();
+return new \Mitha\Aprilia();

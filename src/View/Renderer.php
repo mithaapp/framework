@@ -36,7 +36,7 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Framework\View;
+namespace Mitha\View;
 
 class Renderer
 {

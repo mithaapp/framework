@@ -36,7 +36,7 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Framework\Config;
+namespace Mitha\Config;
 
 class AutoloadConfig
 {

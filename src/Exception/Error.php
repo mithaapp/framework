@@ -36,9 +36,9 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Framework\Exception;
+namespace Mitha\Exception;
 
-use Mitha\Framework\Controller;
+use Mitha\Controller;
 
 class Error extends Controller
 {
