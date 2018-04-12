@@ -37,7 +37,7 @@
  */
 
 error_reporting(E_ALL);
-set_error_handler('\Mitha\Framework\Exception\Handler::errorHandler');
-set_exception_handler('\Mitha\Framework\Exception\Handler::exceptionHandler');
+set_error_handler('\Mitha\Exception\Handler::errorHandler');
+set_exception_handler('\Mitha\Exception\Handler::exceptionHandler');
 
 return new \Mitha\Aprilia();
