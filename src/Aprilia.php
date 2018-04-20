@@ -42,35 +42,49 @@ use Mitha\Routing\Router;
 
 class Aprilia
 {
-    public function __construct()
+    protected $config;
+
+    public function __construct($config)
     {
-        $this->registerAutoload();
+        $this->config = $config;
     }
 
     public function run()
     {
+        date_default_timezone_set($this->config->appTimezone ?? 'UTC');
 
-        $routes = new Router();
+        $this->detectEnvironment();
+        $this->bootEnvironment();
+        $this->setErrorException();
 
-        require APP_PATH.'Config/Routes.php';
+        $routes = \Config\Services::routes();
+
+        require APP_PATH . 'Config/Routes.php';
 
         $routes->routeUrl($_SERVER['REQUEST_URI']);
     }
 
-    protected function registerAutoload(){
-        require_once APP_PATH.'Config/Autoload.php';
-
-        $autoload = new \Config\Autoload();
-        $loader = new \Composer\Autoload\ClassLoader();
-
-        foreach ($autoload->psr4 as $namespace => $path){
-            $loader->setPsr4($namespace, $path);
-
+    protected function detectEnvironment()
+    {
+        if (!defined('ENVIRONMENT')) {
+            define('ENVIRONMENT', $_SERVER['MF_ENV'] ?? 'production');
         }
-        $loader->register(true);
+    }
 
-        foreach ($autoload->files as $path){
-            require $path;
+    protected function bootEnvironment()
+    {
+        if (file_exists(ROOT_PATH . 'boot/environment/' . ENVIRONMENT . '.php')) {
+            require_once ROOT_PATH . 'boot/environment/' . ENVIRONMENT . '.php';
+        } else {
+            header('HTTP/1.1 503 Service Unavailable.', true, 503);
+            echo 'The application environment is not set correctly.';
+            exit(1);
         }
+    }
+
+    protected function setErrorException()
+    {
+        set_error_handler('\Mitha\Exception\Handler::errorHandler');
+        set_exception_handler('\Mitha\Exception\Handler::exceptionHandler');
     }
 }

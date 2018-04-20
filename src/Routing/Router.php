@@ -41,22 +41,17 @@ namespace Mitha\Routing;
 class Router
 {
     protected $defaultNamespace;
-
     protected $defaultController;
-
     protected $defaultMethod;
-
     protected $default404Override;
-
+    protected $default500Override;
     protected $routes = [];
-
     protected $placeholders = [
         '(any)' => '[^/]+',
         '(alphanum)' => '[a-zA-Z0-9]+',
         '(num)' => '[0-9]+',
         '(alpha)' => '[a-zA-Z]+',
     ];
-
     protected $params = [];
 
     public function add(string $route, array $params = [])
@@ -146,9 +141,19 @@ class Router
         $this->defaultNamespace = $namespace;
     }
 
+    public function getDefaultNamespace(): string
+    {
+        return $this->defaultNamespace;
+    }
+
     public function setDefaultController(string $controller)
     {
         $this->defaultController = $controller;
+    }
+
+    public function getDefaultController(): string
+    {
+        return $this->defaultController;
     }
 
     public function setDefaultMethod(string $method)
@@ -156,9 +161,29 @@ class Router
         $this->defaultMethod = $method;
     }
 
+    public function getDefaultMethod(): string
+    {
+        return $this->defaultMethod;
+    }
+
     public function set404Override(string $override)
     {
         $this->default404Override = $override;
+    }
+
+    public function get404Override(): string
+    {
+        return $this->default404Override;
+    }
+
+    public function set500Override(string $override)
+    {
+        $this->default500Override = $override;
+    }
+
+    public function get500Override(): string
+    {
+        return $this->default500Override;
     }
 
     protected function getNamespace(): string

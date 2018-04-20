@@ -41,4 +41,5 @@ namespace Mitha\Config;
 class BaseConfig
 {
     public $baseUrl = '';
+    public $appTimeZone = '';
 }

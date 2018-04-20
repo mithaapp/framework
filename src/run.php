@@ -36,8 +36,19 @@
  * @link  https://www.mithaapp.com
  */
 
-error_reporting(E_ALL);
-set_error_handler('\Mitha\Exception\Handler::errorHandler');
-set_exception_handler('\Mitha\Exception\Handler::exceptionHandler');
+require_once APP_PATH.'Config/Autoload.php';
 
-return new \Mitha\Aprilia();
+$autoload = new \Config\Autoload();
+$loader = new \Composer\Autoload\ClassLoader();
+
+foreach ($autoload->psr4 as $namespace => $path){
+    $loader->setPsr4($namespace, $path);
+
+}
+$loader->register(true);
+
+foreach ($autoload->files as $path){
+    require $path;
+}
+
+return new \Mitha\Aprilia(new \Config\App());

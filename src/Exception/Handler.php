@@ -50,11 +50,20 @@ class Handler
     public static function exceptionHandler($exception)
     {
         $code = $exception->getCode();
+
         if ($code != 404) {
             $code = 500;
         }
         http_response_code($code);
 
-        echo view('errors/development', ['title' => $exception->getMessage(), 'e' => $exception]);
+        if (ENVIRONMENT == 'production') {
+            if ($code == 404) {
+                echo view('errors/404', ['title' => 'Page not Found!', 'content' => 'The page you looking for is doesn\'t exist!.']);
+            } else {
+                echo view('errors/500', ['title' => 'Something went wrong!', 'content' => 'We will work on fixing that right away. Meanwhile, you may return to home page.']);
+            }
+        } else {
+            echo view('errors/development', ['title' => $exception->getMessage(), 'e' => $exception]);
+        }
     }
 }
