@@ -61,7 +61,7 @@ class Controller
         }
     }
 
-    protected function getParam(string $key = null)
+    public function getParam(string $key = null)
     {
         $params = $this->routeParams;
 

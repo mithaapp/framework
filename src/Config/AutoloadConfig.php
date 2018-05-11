@@ -46,8 +46,8 @@ class AutoloadConfig
     public function __construct()
     {
         $this->files = [
-            BASE_PATH . "/Helpers/common.php",
-            BASE_PATH . "/Helpers/url.php"
+            BASE_PATH . "Helpers/common.php",
+            BASE_PATH . "Helpers/url.php"
         ];
     }
 }
