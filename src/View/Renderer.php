@@ -59,6 +59,13 @@ class Renderer
         return $this;
     }
 
+    public function setPath(string $path)
+    {
+        $this->viewPath = $path;
+
+        return $this;
+    }
+
     public function render(string $view, $saveData = null)
     {
         if ($saveData !== null) {

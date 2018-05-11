@@ -37,9 +37,19 @@
  */
 
 if (!function_exists('view')) {
-    function view(string $name, array $data = [], $saveData = null)
+    function view(string $name, array $data = [], array $options = [])
     {
+        $saveData = null;
+        if (array_key_exists('saveData', $options) && $options['saveData'] === true) {
+            $saveData = (bool)$options['saveData'];
+            unset($options['saveData']);
+        }
+
         $renderer = \Config\Services::renderer();
+
+        if (array_key_exists('defaultPath', $options) && $options['defaultPath'] === true) {
+            $renderer->setPath(APP_PATH . 'Views/');
+        }
 
         return $renderer->setData($data)->render($name, $saveData);
     }

@@ -58,12 +58,12 @@ class Handler
 
         if (ENVIRONMENT == 'production') {
             if ($code == 404) {
-                echo view('errors/404', ['title' => 'Page not Found!', 'content' => 'The page you looking for is doesn\'t exist!.']);
+                echo view('errors/404', ['title' => 'Page not Found!', 'content' => 'The page you looking for is doesn\'t exist!.'], ['defaultPath' => true]);
             } else {
-                echo view('errors/500', ['title' => 'Something went wrong!', 'content' => 'We will work on fixing that right away. Meanwhile, you may return to home page.']);
+                echo view('errors/500', ['title' => 'Something went wrong!', 'content' => 'We will work on fixing that right away. Meanwhile, you may return to home page.'], ['defaultPath' => true]);
             }
         } else {
-            echo view('errors/development', ['title' => $exception->getMessage(), 'e' => $exception]);
+            echo view('errors/development', ['title' => $exception->getMessage(), 'e' => $exception], ['defaultPath' => true]);
         }
     }
 }
