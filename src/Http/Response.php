@@ -36,7 +36,7 @@
  * @link  https://www.mithaapp.com
  */
 
-namespace Mitha\Response;
+namespace Mitha\Http;
 
 class Response
 {

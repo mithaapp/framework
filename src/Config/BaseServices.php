@@ -40,6 +40,7 @@ namespace Mitha\Config;
 
 use Config\View;
 use Mitha\Http\Request;
+use Mitha\Http\Response;
 use Mitha\Routing\Router;
 use Mitha\View\Renderer;
 
@@ -67,6 +68,15 @@ class BaseServices
         }
 
         return new Request();
+    }
+
+    public static function response($sharedService = true)
+    {
+        if ($sharedService) {
+            return self::getSharedService('response');
+        }
+
+        return new Response();
     }
 
     public static function routes($sharedService = true)
