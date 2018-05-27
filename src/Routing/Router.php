@@ -40,11 +40,9 @@ namespace Mitha\Routing;
 
 class Router
 {
-    protected $defaultNamespace;
-    protected $defaultController;
-    protected $defaultMethod;
-    protected $default404Override;
-    protected $default500Override;
+    protected $appNamespace;
+    protected $page404Override = [];
+    protected $page500Override = [];
     protected $routes = [];
     protected $placeholders = [
         '(any)' => '[^/]+',
@@ -91,6 +89,31 @@ class Router
         return $this->params;
     }
 
+    public function getUrlParams(): array
+    {
+        $params = $this->params;
+
+        unset($params['controller']);
+        unset($params['action']);
+
+        return $params;
+    }
+
+    public function runController(string $controller, string $action, array $params)
+    {
+        $controller = $this->getNamespace() . $controller;
+        if (class_exists($controller)) {
+            $object = new $controller($params);
+            if (method_exists($object, $action)) {
+                $object->$action();
+            } else {
+                throw new \Exception("Method $action in controller $controller cannot be called directly");
+            }
+        } else {
+            throw new \Exception("Controller class $controller not found");
+        }
+    }
+
     public function routeUrl(string $url)
     {
         $url = $this->removeQuery($url);
@@ -98,24 +121,10 @@ class Router
         $url = ($url == '/') ? $url : ltrim($url, '/');
 
         if ($this->match($url)) {
-
             $controller = $this->params['controller'];
+            $action = $this->params['action'];
 
-            $controller = $this->getNamespace() . $controller;
-
-            if (class_exists($controller)) {
-                $object = new $controller($this->params);
-
-                $action = $this->params['action'];
-
-                if (method_exists($object, $action)) {
-                    $object->$action();
-                } else {
-                    throw new \Exception("Method $action in controller $controller cannot be called directly");
-                }
-            } else {
-                throw new \Exception("Controller class $controller not found");
-            }
+            $this->runController($controller, $action, $this->getUrlParams());
         } else {
             throw new \Exception('No route matched.', 404);
         }
@@ -136,59 +145,39 @@ class Router
         return $url;
     }
 
-    public function setDefaultNamespace(string $namespace)
+    public function setAppNamespace(string $namespace)
     {
-        $this->defaultNamespace = $namespace;
+        $this->appNamespace = $namespace;
     }
 
-    public function getDefaultNamespace(): string
+    public function getAppNamespace(): string
     {
-        return $this->defaultNamespace;
+        return $this->appNamespace;
     }
 
-    public function setDefaultController(string $controller)
+    public function set404Override(array $override)
     {
-        $this->defaultController = $controller;
+        $this->page404Override = $override;
     }
 
-    public function getDefaultController(): string
+    public function get404Override(): array
     {
-        return $this->defaultController;
+        return $this->page404Override;
     }
 
-    public function setDefaultMethod(string $method)
+    public function set500Override(array $override)
     {
-        $this->defaultMethod = $method;
+        $this->page500Override = $override;
     }
 
-    public function getDefaultMethod(): string
+    public function get500Override(): array
     {
-        return $this->defaultMethod;
+        return $this->page500Override;
     }
 
-    public function set404Override(string $override)
+    public function getNamespace(): string
     {
-        $this->default404Override = $override;
-    }
-
-    public function get404Override(): string
-    {
-        return $this->default404Override;
-    }
-
-    public function set500Override(string $override)
-    {
-        $this->default500Override = $override;
-    }
-
-    public function get500Override(): string
-    {
-        return $this->default500Override;
-    }
-
-    protected function getNamespace(): string
-    {
-        $namespace = $this->defaultNamespace;
+        $namespace = $this->appNamespace;
 
         if (array_key_exists('namespace', $this->params)) {
             $namespace .= $this->params['namespace'];

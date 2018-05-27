@@ -40,17 +40,15 @@ namespace Mitha;
 
 class Controller
 {
-    private $routeParams;
+    private $params;
 
-    public function __construct($routeParams)
+    public function __construct($params)
     {
-        $this->routeParams = $routeParams;
+        $this->params = $params;
     }
 
-    public function __call($name, $args)
+    public function __call($method, $args)
     {
-        $method = $name;
-
         if (method_exists($this, $method)) {
             if ($this->before() !== false) {
                 call_user_func_array([$this, $method], $args);
@@ -63,15 +61,10 @@ class Controller
 
     public function getParam(string $key = null)
     {
-        $params = $this->routeParams;
-
-        unset($params['controller']);
-        unset($params['action']);
-
         if ($key) {
-            return $params[$key] ?? null;
+            return $this->params[$key] ?? null;
         }
-        return $params;
+        return $this->params;
     }
 
     protected function before()

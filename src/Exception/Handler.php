@@ -38,6 +38,8 @@
 
 namespace Mitha\Exception;
 
+use Config\Services;
+
 class Handler
 {
     public static function errorHandler($level, $message, $file, $line)
@@ -56,11 +58,41 @@ class Handler
         }
         http_response_code($code);
 
+        $router = Services::routes();
+
         if (ENVIRONMENT == 'production') {
             if ($code == 404) {
-                echo view('errors/404', ['title' => 'Page not Found!', 'content' => 'The page you looking for is doesn\'t exist!.'], ['defaultPath' => true]);
+                $page404Override = $router->get404Override();
+                $controller = $page404Override['controller'] ?? '';
+                $action = $page404Override['action'] ?? '';
+                $validController = false;
+                $validAction = false;
+
+                if(!empty($controller) && !empty($action)){
+                    $validController = (bool) class_exists($router->getNamespace().$controller);
+                    $validAction = (bool) method_exists($router->getNamespace().$controller, $action);
+                }
+                if ($validAction && $validAction) {
+                    $router->runController($page404Override['controller'], $page404Override['action'], $router->getUrlParams());
+                } else {
+                    echo view('errors/404', ['title' => 'Page not Found!', 'content' => 'The page you looking for is doesn\'t exist!.'], ['defaultPath' => true]);
+                }
             } else {
-                echo view('errors/500', ['title' => 'Something went wrong!', 'content' => 'We will work on fixing that right away. Meanwhile, you may return to home page.'], ['defaultPath' => true]);
+                $page500Override = $router->get500Override();
+                $controller = $page500Override['controller'] ?? '';
+                $action = $page500Override['action'] ?? '';
+                $validController = false;
+                $validAction = false;
+
+                if(!empty($controller) && !empty($action)){
+                    $validController = (bool) class_exists($router->getNamespace().$controller);
+                    $validAction = (bool) method_exists($router->getNamespace().$controller, $action);
+                }
+                if ($validAction && $validAction) {
+                    $router->runController($page500Override['controller'], $page500Override['action'], $router->getUrlParams());
+                } else {
+                    echo view('errors/500', ['title' => 'Something went wrong!', 'content' => 'We will work on fixing that right away. Meanwhile, you may return to home page.'], ['defaultPath' => true]);
+                }
             }
         } else {
             echo view('errors/development', ['title' => $exception->getMessage(), 'e' => $exception], ['defaultPath' => true]);
