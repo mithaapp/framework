@@ -3,7 +3,7 @@
 /**
  * Mitha Framework
  *
- * An lightweight PHP framework for developers
+ * A lightweight PHP framework for developers
  *
  * This content is released under the MIT License (MIT)
  *
@@ -31,9 +31,9 @@
  * @author  Mitha Framework Dev Team
  * @author  Mitha Aprilia <mitha@mithaaprilia.com>
  * @author  Mutasim Ridlo, S.Kom <ridho@mutasimridlo.com>
- * @copyright 2018, MithaApp (https://www.mithaapp.com/)
+ * @copyright 2018, MithaApp (https://mitha.app/)
  * @license  https://opensource.org/licenses/MIT	MIT License
- * @link  https://www.mithaapp.com
+ * @link  https://mitha.app
  */
 
 namespace Mitha\Exception;
