@@ -65,6 +65,11 @@ class SQL
         return $this->db->quote($string);
     }
 
+    public function insertId()
+    {
+        return $this->db->lastInsertId();
+    }
+
     public function query(string $sql)
     {
         $this->query = $this->db->query($sql);
@@ -80,8 +85,22 @@ class SQL
         return $this->query->fetchAll($type);
     }
 
+    public function getRow(int $row = 0, string $returnType = 'array')
+    {
+        if ($returnType == 'object' || $returnType == 'array') {
+            $type = $returnType == 'object' ? PDO::FETCH_OBJ : PDO::FETCH_ASSOC;
+        }
+        return $this->query->fetch($type);
+    }
+
     public function prepare(string $query)
     {
         return $this->db->prepare($query);
+    }
+
+    public function exec(string $sql)
+    {
+        $this->db->exec($sql);
+        return $this;
     }
 }
