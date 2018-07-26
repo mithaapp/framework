@@ -38,15 +38,50 @@
 
 namespace Mitha\Database;
 
-use Mitha\Database\SQL;
+use Config\Database;
+use PDO;
 
-class Connection
+class SQL
 {
+    private $db;
+    private $query;
 
-    public static function connect(string $group = 'default')
+    public function __construct($group = 'default')
     {
-        $db = new SQL();
-        return $db;
+        $this->init($group);
     }
 
+    protected function init(string $group)
+    {
+        $config = new Database();
+        $dsn = 'mysql:host=' . $config->$group['hostname'] . ';dbname=' . $config->$group['database'] . ';charset=' . $config->$group['charset'];
+        $this->db = new PDO($dsn, $config->$group['username'], $config->$group['password'], $config->$group['options']);
+
+        return $this->db;
+    }
+
+    public function escape(string $string)
+    {
+        return $this->db->quote($string);
+    }
+
+    public function query(string $sql)
+    {
+        $this->query = $this->db->query($sql);
+        return $this;
+    }
+
+
+    public function getResult(string $returnType = 'array')
+    {
+        if ($returnType == 'object' || $returnType == 'array') {
+            $type = $returnType == 'object' ? PDO::FETCH_OBJ : PDO::FETCH_ASSOC;
+        }
+        return $this->query->fetchAll($type);
+    }
+
+    public function prepare(string $query)
+    {
+        return $this->db->prepare($query);
+    }
 }
