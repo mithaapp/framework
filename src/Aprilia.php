@@ -55,7 +55,10 @@ class Aprilia
 
         $this->detectEnvironment();
         $this->bootEnvironment();
-        $this->setErrorException();
+
+        if(CATCH_ERRORS) {
+            $this->setErrorException();
+        }
 
         $routes = \Config\Services::routes();
 
@@ -68,6 +71,10 @@ class Aprilia
     {
         if (!defined('ENVIRONMENT')) {
             define('ENVIRONMENT', $_SERVER['MF_ENV'] ?? 'production');
+        }
+
+        if (!defined('CATCH_ERRORS')) {
+            define('CATCH_ERRORS', $_SERVER['MF_CATCH_ERRORS'] ?? 1);
         }
     }
 
