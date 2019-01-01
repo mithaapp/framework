@@ -33,7 +33,7 @@
  * @author  Mutasim Ridlo, S.Kom <ridho@mutasimridlo.com>
  * @copyright 2018, MithaApp (https://mitha.app/)
  * @license  https://opensource.org/licenses/MIT	MIT License
- * @link  https://mitha.app
+ * @db  https://mitha.app
  */
 
 namespace Mitha\Database;
@@ -41,27 +41,49 @@ namespace Mitha\Database;
 use Config\Database;
 use PDO;
 
-class SQL
+class SQL extends SQLBuilder
 {
     private $db;
     private $query;
+    protected $config;
+    protected $group;
 
     public function __construct($group = 'default')
     {
-        $this->init($group);
+        $this->group = $group;
+        $this->config();
+        $this->init();
     }
 
-    protected function init(string $group)
+    private function init()
     {
-        $config = new Database();
-        $dsn = 'mysql:host=' . $config->$group['hostname'] . ';dbname=' . $config->$group['database'] . ';charset=' . $config->$group['charset'];
-        $this->db = new PDO($dsn, $config->$group['username'], $config->$group['password'], $config->$group['options']);
+        if (is_null($this->db)) {
+            $this->db = $this->connect($this->group);
+        }
+    }
+
+    private function config()
+    {
+        $this->config = new Database();
+        return $this->config;
+    }
+
+
+    protected function connect(string $group)
+    {
+        $group = $this->config->$group;
+        $dsn = 'mysql:host=' . $group['hostname'] . ';dbname=' . $group['database'] . ';charset=' . $group['charset'];
+        $this->db = new PDO($dsn, $group['username'], $group['password'], $group['options']);
 
         return $this->db;
     }
 
-    public function escape(string $string)
+    public function escape($string)
     {
+        if (is_null($this->db)) {
+            $this->init();
+        }
+
         return $this->db->quote($string);
     }
 
@@ -70,27 +92,71 @@ class SQL
         return $this->db->lastInsertId();
     }
 
-    public function query(string $sql)
+    public function results($query, $returnType = false)
     {
-        $this->query = $this->db->query($sql);
-        return $this;
+        $return = false;
+
+        if ($returnType) {
+            $this->returnType = $returnType;
+        }
+
+        if (is_null($query)) {
+            $query = $this->command();
+        }
+
+        $result = $this->query($query);
+
+        if ($this->returnType == 'object' || $this->returnType == 'array') {
+            $fetch = $this->returnType == 'object' ? PDO::FETCH_OBJ : PDO::FETCH_ASSOC;
+
+            while ($row = $result->fetch($fetch)) {
+                $return[] = $row;
+            }
+
+            return $return;
+        }
+
+        if ($this->returnType == 'iterator') {
+            return $result;
+        }
+
+        return $return;
     }
 
-
-    public function getResult(string $returnType = 'array')
+    public function query($sql, $method = 'query')
     {
-        if ($returnType == 'object' || $returnType == 'array') {
-            $type = $returnType == 'object' ? PDO::FETCH_OBJ : PDO::FETCH_ASSOC;
+        if (is_null($this->db)) {
+            $this->init();
         }
-        return $this->query->fetchAll($type);
+
+        $this->lastQuery = $sql;
+        $query = $this->db->$method($sql);
+
+        if (!$query) {
+            $backtrace = debug_backtrace()[2];
+            throw new \ErrorException($this->db->errorInfo()[2], 0, 1, $backtrace['file'], $backtrace['line']);
+        }
+
+        return $query;
     }
 
-    public function getRow(int $row = 0, string $returnType = 'array')
+    public function row($query, $returnType = false)
     {
-        if ($returnType == 'object' || $returnType == 'array') {
-            $type = $returnType == 'object' ? PDO::FETCH_OBJ : PDO::FETCH_ASSOC;
+        if ($returnType) {
+            $this->returnType = $returnType;
         }
-        return $this->query->fetch($type);
+
+        if (is_null($query)) {
+            $query = $this->command();
+        }
+
+        if (is_null($this->db)) {
+            $this->init();
+        }
+
+        $result = $this->query($query);
+
+        return $result->fetch($this->returnType == 'object' ? PDO::FETCH_OBJ : PDO::FETCH_ASSOC);
     }
 
     public function prepare(string $query)
@@ -98,9 +164,39 @@ class SQL
         return $this->db->prepare($query);
     }
 
-    public function exec(string $sql)
+    public function version()
     {
-        $this->db->exec($sql);
-        return $this;
+        return $this->db->getAttribute(constant('PDO::ATTR_SERVER_VERSION'));
+    }
+
+    public function close()
+    {
+        $this->db = null;
+    }
+
+    public function begin()
+    {
+        $this->db->beginTransaction();
+    }
+
+    public function commit()
+    {
+        $this->db->commit();
+    }
+
+    public function rollback()
+    {
+        $this->db->rollBack();
+    }
+
+    public function exec($sql)
+    {
+        return $this->query($sql, 'exec');
+    }
+
+    public function table(string $table)
+    {
+        $group = $this->group;
+        return $this->config->$group['dbprefix'] . $table;
     }
 }
