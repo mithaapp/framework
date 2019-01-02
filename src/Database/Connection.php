@@ -38,14 +38,12 @@
 
 namespace Mitha\Database;
 
-use Mitha\Database\SQL;
-
 class Connection
 {
 
     public static function connect(string $group = 'default')
     {
-        $db = new SQL();
+        $db = new SQL($group);
         return $db;
     }
 
