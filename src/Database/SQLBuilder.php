@@ -65,7 +65,7 @@ class SQLBuilder
     protected $lastQuery;
     protected $lastError;
     protected $throwError = false;
-    protected $returnType = 'object';
+    protected $returnType = 'array';
 
     public function distinct()
     {
