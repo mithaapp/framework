@@ -108,7 +108,6 @@ class SQLBuilder
     {
         if (is_string($value) && $this->isQuotes) {
             $value = $this->escape($value);
-            $value = " '$value'";
         }
 
         $operator = strtoupper($operator);
