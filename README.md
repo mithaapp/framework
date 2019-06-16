@@ -1,2 +1,2 @@
-# framework
-The core of mitha framework
+# mitha framework
+This repository only contain the core of mitha framework

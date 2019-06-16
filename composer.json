@@ -1,0 +1,40 @@
+{
+  "name": "mithaapp/framework",
+  "description": "The core of mitha framework",
+  "keywords": ["framework", "mitha"],
+  "homepage": "https://mitha.app",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mitha Aprilia",
+      "email": "mitha@mithaaprilia.com",
+      "homepage": "http://www.mithaaprilia.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Mutasim Ridlo, S.Kom",
+      "email": "ridho@mutasimridlo.com",
+      "homepage": "http://www.mutasimridlo.com",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Mitha\\": "src/"
+    },
+    "files": [
+      "src/Helpers/common.php",
+	  "src/Helpers/url.php"
+    ]
+  },
+  "repositories": {
+    "packagist.org": {
+      "type": "composer",
+      "url": "https://packagist.org"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.2"
+  }
+}
