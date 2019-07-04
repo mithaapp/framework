@@ -197,6 +197,9 @@ class SQL extends SQLBuilder
     public function table(string $table)
     {
         $group = $this->group;
-        return $this->config->$group['dbprefix'] . $table;
+        if ($table) {
+            return $this->config->$group['dbprefix'] . $table;
+        }
+        return null;
     }
 }
