@@ -64,7 +64,15 @@ class Aprilia
 
         require APP_PATH . 'Config/Routes.php';
 
-        $routes->routeUrl($_SERVER['REQUEST_URI']);
+        $base = str_replace('index.php', '', $_SERVER['DOCUMENT_URI']);
+		
+		if($base == "/"){
+			$uri = $_SERVER['REQUEST_URI'];
+		}else{
+			$uri = '/'.str_replace($base, '', $_SERVER['REQUEST_URI']);
+		}
+		
+        $routes->routeUrl($uri);
     }
 
     protected function detectEnvironment()
